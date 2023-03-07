@@ -11,13 +11,13 @@ class PhantomWindow(qtw.QWidget):
     def __init__(self):
         super().__init__()
 
-        uic.loadUi("src/ui/phantom_window.ui", self)
+        uic.loadUi("ui/phantom_widget.ui", self)
 
-        self.Phantom_holder = Viewer()
-        self.Phantom_holder.mpl_connect('button_press_event', self.on_press)
-        self.filtered_layout.addWidget(self.Phantom_holder)
-        self.sequence_holder = Viewer()
-        self.image_layout.addWidget(self.sequence_holder)
+        #self.Phantom_holder = Viewer()
+        #self.Phantom_holder.mpl_connect('button_press_event', self.on_press)
+        #self.phantom_Layout.addWidget(self.Phantom_holder)
+        #self.sequence_holder = Viewer()
+       # self.Reconstruction_Layout.addWidget(self.sequence_holder)
 
         # self.filters_list.activated.connect(self.image_transformation)
         # self.modes_list.activated.connect(self.image_transformation)
@@ -64,7 +64,11 @@ class PhantomWindow(qtw.QWidget):
        print("T2 = ", self.t2_arr[xdata,ydata])
 
 
-            
+class Reconstruction(qtw.QWidget):
+    def __init__(self):
+        super().__init__()
+
+        uic.loadUi("ui/reconstruction_widget.ui", self)
 
         
 
