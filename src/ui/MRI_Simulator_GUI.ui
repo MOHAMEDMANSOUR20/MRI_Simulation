@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1133</width>
-    <height>733</height>
+    <width>1302</width>
+    <height>816</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -79,16 +79,16 @@
             </layout>
            </item>
            <item>
-            <layout class="QVBoxLayout" name="Sequence_Layout">
+            <layout class="QVBoxLayout" name="sequence_Layout">
              <item>
-              <spacer name="verticalSpacer_2">
+              <spacer name="horizontalSpacer_8">
                <property name="orientation">
-                <enum>Qt::Vertical</enum>
+                <enum>Qt::Horizontal</enum>
                </property>
                <property name="sizeHint" stdset="0">
                 <size>
-                 <width>20</width>
-                 <height>40</height>
+                 <width>40</width>
+                 <height>20</height>
                 </size>
                </property>
               </spacer>
@@ -103,8 +103,22 @@
         <layout class="QVBoxLayout" name="verticalLayout_3" stretch="2,1">
          <item>
           <layout class="QGridLayout" name="gridLayout">
-           <item row="1" column="1">
-            <widget class="QSlider" name="Slice_Selection_Slider">
+           <item row="2" column="0">
+            <widget class="QLabel" name="Gy_label">
+             <property name="text">
+              <string>Gy</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="Slice_selection_label">
+             <property name="text">
+              <string>Slice Selection</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QSlider" name="RF_Slider">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
              </property>
@@ -124,24 +138,10 @@
              </property>
             </widget>
            </item>
-           <item row="0" column="1">
-            <widget class="QSlider" name="RF_Slider">
+           <item row="1" column="1">
+            <widget class="QSlider" name="Slice_Selection_Slider">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="Gy_label">
-             <property name="text">
-              <string>Gy</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="Slice_selection_label">
-             <property name="text">
-              <string>Slice Selection</string>
              </property>
             </widget>
            </item>
@@ -231,22 +231,9 @@
        <widget class="QWidget" name="layoutWidget">
         <layout class="QVBoxLayout" name="verticalLayout_2">
          <item>
-          <layout class="QVBoxLayout" name="verticalLayout_4" stretch="1,5">
+          <layout class="QVBoxLayout" name="verticalLayout_4" stretch="0">
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_2">
-             <item>
-              <spacer name="verticalSpacer_3">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>40</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
              <item>
               <spacer name="horizontalSpacer_3">
                <property name="orientation">
@@ -289,24 +276,10 @@
              </item>
             </layout>
            </item>
-           <item>
-            <layout class="QVBoxLayout" name="phantom_Layout">
-             <item>
-              <spacer name="verticalSpacer">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>40</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-            </layout>
-           </item>
           </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="phantom_Layout"/>
          </item>
         </layout>
        </widget>
@@ -320,7 +293,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1133</width>
+     <width>1302</width>
      <height>26</height>
     </rect>
    </property>
