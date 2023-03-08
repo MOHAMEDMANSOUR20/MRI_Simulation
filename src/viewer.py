@@ -9,7 +9,7 @@ matplotlib.use('Qt5Agg')
 
 class Viewer(FigureCanvas):
 
-    def __init__(self, parent=None, width=0.1, height=0.01, dpi=100):
+    def __init__(self, parent=None, width=1, height=1, dpi=100):
         self.fig = Figure()
         super().__init__(self.fig) 
         self.axes = self.fig.add_axes([0,0,1,1])
