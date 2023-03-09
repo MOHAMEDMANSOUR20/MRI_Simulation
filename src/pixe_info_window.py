@@ -10,8 +10,6 @@ class Pixel_Info(qtw.QDialog):
     def __init__(self):
         super().__init__()
         uic.loadUi("ui/pixel_info_window.ui", self)
-<<<<<<< HEAD
-=======
         self.setStyleSheet(qdarkstyle.load_stylesheet(qt_api='pyqt5'))
         self.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
 
@@ -22,5 +20,4 @@ class Pixel_Info(qtw.QDialog):
         self.t2_info_label.setText(str(info_list[3]))
         self.proton_density_info_label.setText(str(info_list[4]))
 
->>>>>>> e9a292a (pop_up_window_update)
 
