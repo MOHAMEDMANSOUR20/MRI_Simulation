@@ -2,10 +2,10 @@ from PyQt5 import QtWidgets as qtw
 from PyQt5 import uic
 import sys
 
-class Pixel_Info(qtw.QWidget):
+class Pixel_Info(qtw.QDialog):
     def __init__(self):
         super().__init__()
-        uic.loadUi("ui/pixel_info_window.ui")
+        uic.loadUi("ui/pixel_info_window.ui", self)
 
 if __name__ == '__main__':
     app = qtw.QApplication(sys.argv)

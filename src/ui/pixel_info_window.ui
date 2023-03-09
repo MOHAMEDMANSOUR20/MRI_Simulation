@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>pixel_info_window</class>
- <widget class="QWidget" name="pixel_info_window">
-  <property name="windowModality">
-   <enum>Qt::ApplicationModal</enum>
-  </property>
+ <class>pixel_info_dialog</class>
+ <widget class="QDialog" name="pixel_info_dialog">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -12,11 +9,6 @@
     <width>400</width>
     <height>300</height>
    </rect>
-  </property>
-  <property name="font">
-   <font>
-    <pointsize>10</pointsize>
-   </font>
   </property>
   <property name="windowTitle">
    <string>Pixel Information</string>
@@ -56,7 +48,7 @@
         <widget class="QLabel" name="x_label">
          <property name="font">
           <font>
-           <pointsize>12</pointsize>
+           <pointsize>16</pointsize>
            <weight>75</weight>
            <italic>true</italic>
            <bold>true</bold>
@@ -91,7 +83,7 @@
         <widget class="QLabel" name="x_info_label">
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <pointsize>16</pointsize>
           </font>
          </property>
          <property name="text">
@@ -171,7 +163,7 @@
         <widget class="QLabel" name="y_label">
          <property name="font">
           <font>
-           <pointsize>12</pointsize>
+           <pointsize>16</pointsize>
            <weight>75</weight>
            <italic>true</italic>
            <bold>true</bold>
@@ -200,6 +192,11 @@
        </item>
        <item>
         <widget class="QLabel" name="y_info_label">
+         <property name="font">
+          <font>
+           <pointsize>16</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>4</string>
          </property>
@@ -240,6 +237,11 @@
       <layout class="QGridLayout" name="gridLayout">
        <item row="2" column="1">
         <widget class="QLabel" name="proton_density_info_label">
+         <property name="font">
+          <font>
+           <pointsize>14</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>TextLabel</string>
          </property>
@@ -250,6 +252,11 @@
        </item>
        <item row="1" column="1">
         <widget class="QLabel" name="t2_info_label">
+         <property name="font">
+          <font>
+           <pointsize>14</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>TextLabel</string>
          </property>
@@ -260,6 +267,11 @@
        </item>
        <item row="0" column="1">
         <widget class="QLabel" name="t1_info_label">
+         <property name="font">
+          <font>
+           <pointsize>14</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>TextLabel</string>
          </property>
@@ -270,6 +282,11 @@
        </item>
        <item row="2" column="0">
         <widget class="QLabel" name="proton_density_label">
+         <property name="font">
+          <font>
+           <pointsize>14</pointsize>
+          </font>
+         </property>
          <property name="accessibleName">
           <string>0</string>
          </property>
@@ -283,6 +300,11 @@
        </item>
        <item row="1" column="0">
         <widget class="QLabel" name="t2_label">
+         <property name="font">
+          <font>
+           <pointsize>14</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>T2</string>
          </property>
@@ -293,6 +315,11 @@
        </item>
        <item row="0" column="0">
         <widget class="QLabel" name="t1_label">
+         <property name="font">
+          <font>
+           <pointsize>14</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>T1</string>
          </property>
