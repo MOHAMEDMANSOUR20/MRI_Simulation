@@ -13,14 +13,14 @@ class Viewer(FigureCanvas):
         self.fig = Figure()
 
         super().__init__(self.fig)
-        self.axes = self.fig.add_axes([0, 0, 1,1])
+        self.axes = self.fig.add_axes([0, 0, 1, 1])
         for spine in ['right', 'top', 'left', 'bottom']:
             self.axes.spines[spine].set_color('gray')
 
         self.axes.axis('off')
 
-    def draw_image(self, img):
-        self.axes.imshow(img, cmap='gray', aspect='auto')
+    def draw_image(self, img, vmin=None, vmax=None):
+        self.axes.imshow(img, cmap='gray', vmin=vmin, vmax=vmax, aspect='auto')
         self.draw()
 
     def update_image(self, img):

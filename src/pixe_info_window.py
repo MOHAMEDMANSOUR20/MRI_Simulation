@@ -1,14 +1,26 @@
+import sys
+
+import qdarkstyle
 from PyQt5 import QtWidgets as qtw
 from PyQt5 import uic
-import sys
+from viewer import Viewer
+
 
 class Pixel_Info(qtw.QDialog):
     def __init__(self):
         super().__init__()
         uic.loadUi("ui/pixel_info_window.ui", self)
+<<<<<<< HEAD
+=======
+        self.setStyleSheet(qdarkstyle.load_stylesheet(qt_api='pyqt5'))
+        self.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
 
-if __name__ == '__main__':
-    app = qtw.QApplication(sys.argv)
-    win = Pixel_Info()
-    win.show()
-    sys.exit(app.exec_())
+    def show_properties(self, info_list):
+        self.x_info_label.setText(str(info_list[0]))
+        self.y_info_label.setText(str(info_list[1]))
+        self.t1_info_label.setText(str(info_list[2]))
+        self.t2_info_label.setText(str(info_list[3]))
+        self.proton_density_info_label.setText(str(info_list[4]))
+
+>>>>>>> e9a292a (pop_up_window_update)
+

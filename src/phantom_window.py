@@ -1,12 +1,12 @@
 import math
 from PyQt5 import QtWidgets as qtw
 from PyQt5 import uic
+
+from src.pixe_info_window import Pixel_Info
 from viewer import Viewer
 import cv2
-from numpy.fft import fft2, fftshift
 import numpy as np
-from vector import Vector
-from rotation import Rotation
+from reconstruction_window import Reconstruction
 
 
 class PhantomWindow(qtw.QWidget):
@@ -31,8 +31,9 @@ class PhantomWindow(qtw.QWidget):
         # PD_holder
         self.PD_holder = Viewer()
         self.pd_layout.addWidget(self.PD_holder)
-        self.PD_holder.mpl_connect('button_press_event', self.on_press)
-        self.Rotation_matrix = Rotation()
+        self.pop_wind = Pixel_Info()
+
+        # self.PD_holder.mpl_connect('button_press_event', self.on_press)
 
         # self.filters_list.activated.connect(self.image_transformation)
         # self.modes_list.activated.connect(self.image_transformation)
@@ -50,7 +51,7 @@ class PhantomWindow(qtw.QWidget):
             [[2, 3, 5],
              [5, 10, 7],
              [1, 8, 2]])
-        self.T2_holder.draw_image(np.abs(np.fft.fft2(self.test_array)))
+        # self.T2_holder.draw_image(np.abs(np.fft.fft2(self.test_array)))
         self.t1_arr = None
         self.t2_arr = None
         self.is_prepared = False
@@ -60,54 +61,28 @@ class PhantomWindow(qtw.QWidget):
         phantom_img = cv2.cvtColor(phantom_img, cv2.COLOR_BGR2GRAY)
         self.phantom_img = phantom_img
         self.Phantom_holder.draw_image(phantom_img)
+        Reconstruction.store_slice(self.test_array)
         self.prepare_properties(phantom_img)
 
     def prepare_properties(self, phantom_img):
-        self.t1_arr = np.array(phantom_img)
-        self.t2_arr = np.array(phantom_img)
+        self.t1_arr = np.array(phantom_img).astype(np.int16)
+        self.t2_arr = np.array(phantom_img).astype(np.int16)
+        self.pd_arr = np.ones(self.t2_arr.shape)
         for i in self.unique_pixels:
-            self.t1_arr[self.t1_arr == i] = 5000
+            self.t1_arr[self.t1_arr == i] = self.tissue_maping[i][0]
             self.t2_arr[self.t2_arr == i] = self.tissue_maping[i][1]
         self.is_prepard = True
-        self.apply_sequence(self.test_array)
+        self.T1_holder.draw_image(self.t1_arr)
+        self.T2_holder.draw_image(self.t2_arr)
+        self.PD_holder.draw_image(self.pd_arr, vmax=1, vmin=0)
 
-    def apply_sequence(self, phantom_img):
-        num_row = phantom_img.shape[0]
-        num_column = phantom_img.shape[1]
-        img_vectors = np.ones((num_row, num_column, 3))
-        img_vectors[:, :, 2] = img_vectors[:, :, 2] * phantom_img
-        img_vectors[:, :, 0] = 0
-        img_vectors[:, :, 1] = 0
-        R_forRF = self.Rotation_matrix.RX(self.PI / 2).T
-        img_vectors = np.matmul(img_vectors[:], R_forRF)
-        print(img_vectors[0, 0, 1], R_forRF)
-
-        step_inGY = 2 * self.PI / num_row
-        step_inGx = 2 * self.PI / num_column
-        img_vector_changed = img_vectors
-        vector_summation = []
-        for i in range(num_row):
-            step_y_inner = (step_inGY * (i+1))/num_row
-            vector_sum = []
-            for i_inner in range(num_row):
-                R_forGY = self.Rotation_matrix.RZ(step_y_inner * i_inner).T
-                img_vector_changed[i_inner, :, :] = np.matmul(img_vector_changed[i_inner, :, :], R_forGY)
-            for j in range(num_column):
-                R_forGX = self.Rotation_matrix.RZ(step_inGx * j).T
-                img_vector_changed[:, j, :] = np.matmul(img_vector_changed[:, j, :], R_forGX)
-
-                x_sum = np.sum(img_vector_changed[:, :, 0])
-                y_sum = np.sum(img_vector_changed[:, :, 1])
-                s_spin = np.sqrt(x_sum ** 2 + y_sum ** 2)
-                vector_sum.append(s_spin)
-            vector_summation.append(vector_sum)
-            img_vector_changed = img_vectors
-        # F1Mag_F2Phase = np.abs(np.fft.ifft(vector_summation))
-        self.T1_holder.draw_image(vector_summation)
+        # self.apply_sequence(self.test_array)
 
     def on_press(self, event):
         if self.is_prepard:
             xdata = int(event.xdata)
             ydata = int(event.ydata)
-            print("T1 = ", self.t1_arr[xdata, ydata])
-            print("T2 = ", self.t2_arr[xdata, ydata])
+            self.pop_wind.show_properties(
+                [xdata, ydata, self.t1_arr[ydata, xdata], self.t2_arr[ydata, xdata], self.pd_arr[ydata, xdata]])
+            self.pop_wind.show()
+
