@@ -43,6 +43,9 @@ class MainWindow(qtw.QMainWindow):
     def Load_phantom_file(self):
         image_path = qtw.QFileDialog.getOpenFileName(filter="Image (*.*)")[0]
         self.phantom_window.load_phantom_image(image_path)
+        self.reconstruction_window.Reconstruction_holder.clear_canvans()
+        self.reconstruction_window.K_Space_holder.clear_canvans()
+
 
     @pyqtSlot()
     def Load_sequence_file(self):

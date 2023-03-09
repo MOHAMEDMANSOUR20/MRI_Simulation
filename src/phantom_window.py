@@ -20,18 +20,29 @@ class PhantomWindow(qtw.QWidget):
         self.Phantom_holder = Viewer()
         self.phantom_layout.addWidget(self.Phantom_holder)
         self.Phantom_holder.mpl_connect('button_press_event', self.on_press)
+        self.Phantom_holder.mpl_connect('figure_enter_event', self.on_entry)
+
         # T1_holder
         self.T1_holder = Viewer()
         self.t1_layout.addWidget(self.T1_holder)
         self.T1_holder.mpl_connect('button_press_event', self.on_press)
+        self.T1_holder.mpl_connect('figure_enter_event', self.on_entry)
+
         # T2_holder
         self.T2_holder = Viewer()
         self.t2_layout.addWidget(self.T2_holder)
         self.T2_holder.mpl_connect('button_press_event', self.on_press)
+        self.T2_holder.mpl_connect('figure_enter_event', self.on_entry)
+
         # PD_holder
         self.PD_holder = Viewer()
         self.pd_layout.addWidget(self.PD_holder)
+        self.PD_holder.mpl_connect('figure_enter_event', self.on_entry)
+        self.PD_holder.mpl_connect('button_press_event', self.on_press)
+
+
         self.pop_wind = Pixel_Info()
+
 
         # self.PD_holder.mpl_connect('button_press_event', self.on_press)
 
@@ -82,7 +93,10 @@ class PhantomWindow(qtw.QWidget):
         if self.is_prepard:
             xdata = int(event.xdata)
             ydata = int(event.ydata)
+
             self.pop_wind.show_properties(
                 [xdata, ydata, self.t1_arr[ydata, xdata], self.t2_arr[ydata, xdata], self.pd_arr[ydata, xdata]])
-            self.pop_wind.show()
 
+    def on_entry(self, event):
+        if self.is_prepard:
+            self.pop_wind.hide()

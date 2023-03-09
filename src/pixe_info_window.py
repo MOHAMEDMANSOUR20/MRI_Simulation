@@ -3,6 +3,8 @@ import sys
 import qdarkstyle
 from PyQt5 import QtWidgets as qtw
 from PyQt5 import uic
+from PyQt5 import QtCore
+
 from viewer import Viewer
 
 
@@ -19,5 +21,13 @@ class Pixel_Info(qtw.QDialog):
         self.t1_info_label.setText(str(info_list[2]))
         self.t2_info_label.setText(str(info_list[3]))
         self.proton_density_info_label.setText(str(info_list[4]))
+        self.setFocus()
+        self.show()
 
-
+    # def focusOutEvent(self, event):
+    #     super().focusOutEvent(event)
+    #     self.hide()
+    #
+    # def focusInEvent(self, event):
+    #     super().focusInEvent(event)
+    #     self.clearFocus()
