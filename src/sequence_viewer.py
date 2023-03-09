@@ -3,12 +3,12 @@ from PyQt5 import uic
 from viewer import Viewer
 
 
-class Sequence(qtw.QWidget):
+class Sequence_Viewer(qtw.QWidget):
     def __init__(self):
         super().__init__()
 
-        uic.loadUi("ui/sequence.ui", self)
+        uic.loadUi("ui/sequence_viewer_widget.ui", self)
 
         self.sequence_holder = Viewer()
-        self.sequence_Layout.addWidget(self.sequence_holder)
+        self.sequence_viewer_Layout.addWidget(self.sequence_holder)
 

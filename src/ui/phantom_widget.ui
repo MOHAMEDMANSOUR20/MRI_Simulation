@@ -31,11 +31,7 @@
       </attribute>
       <layout class="QGridLayout" name="gridLayout_2">
        <item row="0" column="0">
-        <layout class="QVBoxLayout" name="phantom_layout">
-         <item>
-          <layout class="QVBoxLayout" name="verticalLayout_5" stretch=""/>
-         </item>
-        </layout>
+        <layout class="QVBoxLayout" name="phantom_layout"/>
        </item>
       </layout>
      </widget>

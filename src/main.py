@@ -6,23 +6,25 @@ import qdarkstyle
 from PyQt5.QtCore import pyqtSlot
 from phantom_window import PhantomWindow
 from reconstruction import Reconstruction
-from sequence import Sequence
-
+from sequence_viewer import Sequence_Viewer
+from sequence_control import Sequence_Controller
 
 class MainWindow(qtw.QMainWindow):
     def __init__(self):
         super().__init__()
 
         uic.loadUi("ui/MRI_Simulator_GUI.ui", self)
-        self.setStyleSheet(qdarkstyle.load_stylesheet(qt_api='pyqt5'))
-        self.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
+        #self.setStyleSheet(qdarkstyle.load_stylesheet(qt_api='pyqt5'))
+        #self.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
         self.phantom_window = PhantomWindow()
         self.reconstruction_window = Reconstruction()
-
-        self.phantom_Layout.addWidget(self.phantom_window)
-        self.splitter.addWidget(self.reconstruction_window)
-        self.sequence_holder = Sequence()
-        self.sequence_Layout.addWidget(self.sequence_holder)
+        self.sequence_controller = Sequence_Controller()
+        self.sequence_control_Layout.addWidget(self.sequence_controller)
+        self.phantom_img_Layout.addWidget(self.phantom_window)
+        self.reconstruction_Layout.addWidget(self.reconstruction_window)
+        self.sequence_viewer = Sequence_Viewer()
+        self.sequence_viewer_Layout.addWidget(self.sequence_viewer)
+        #self.sequence_Layout.addWidget(self.sequence_holder)
         self.action_Phantom.triggered.connect(self.Load_phantom_file)
         self.action_Sequence.triggered.connect(self.Load_sequence_file)
 
