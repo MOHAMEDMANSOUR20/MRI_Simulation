@@ -10,6 +10,7 @@ class Sequence_Viewer(qtw.QWidget):
         super().__init__()
 
         uic.loadUi("ui/sequence_viewer_widget.ui", self)
+        self.img_shape = [-1, -1, -1]
         self.sequence_controller = Sequence_Controller()
         self.sequence_control_Layout.addWidget(self.sequence_controller)
 
@@ -26,14 +27,23 @@ class Sequence_Viewer(qtw.QWidget):
     def get_rf_value(self):
         rf = self.sequence_controller.RF_Slider.value()
         self.sequence_controller.json_file.data["Sequence"]["RF"] = rf
+        rf = rf / 1000
+        self.sequence_holder.draw_rf(rf)
 
     def get_slice_selection_value(self):
         slice = self.sequence_controller.Slice_Selection_Slider.value()
         self.sequence_controller.json_file.data["Sequence"]["Slice"] = slice
+        slice = slice / 1000
+        self.sequence_holder.draw_slice_selection(slice)
+
 
     def get_Gy_value(self):
         gy = self.sequence_controller.Gy_Slider.value()
         self.sequence_controller.json_file.data["Sequence"]["GY"] = gy
+        gy = gy / 1000
+        img_rows = self.img_shape[0]
+        self.sequence_holder.draw_gy(img_rows, gy)
+
 
     def get_Gx_value(self):
         gx = self.sequence_controller.Gx_Slider.value()

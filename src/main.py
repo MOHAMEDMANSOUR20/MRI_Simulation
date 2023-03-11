@@ -44,16 +44,18 @@ class MainWindow(qtw.QMainWindow):
         self.phantom_window.load_phantom_image(image_path)
         self.reconstruction_window.Reconstruction_holder.clear_canvans()
         self.reconstruction_window.K_Space_holder.clear_canvans()
+        img = self.phantom_window.phantom_img
+        self.sequence_viewer.img_shape = img.shape
 
 
     @pyqtSlot()
     def Load_sequence_file(self):
         file_path = qtw.QFileDialog.getOpenFileName(filter="Text files (*.json)")[0]
         self.sequence_viewer.sequence_controller.json_file.read_json(file_path)
-        rf = self.sequence_viewer.sequence_controller.json_file.data["Sequence"]["RF"]# / 1000
-        slice = self.sequence_viewer.sequence_controller.json_file.data["Sequence"]["Slice"] #
-        gy = self.sequence_viewer.sequence_controller.json_file.data["Sequence"]["GY"] #* (2/1000)
-        gx = self.sequence_viewer.sequence_controller.json_file.data["Sequence"]["GX"] #* (2/1000)
+        rf = self.sequence_viewer.sequence_controller.json_file.data["Sequence"]["RF"]
+        slice = self.sequence_viewer.sequence_controller.json_file.data["Sequence"]["Slice"]
+        gy = self.sequence_viewer.sequence_controller.json_file.data["Sequence"]["GY"]
+        gx = self.sequence_viewer.sequence_controller.json_file.data["Sequence"]["GX"]
         te = self.sequence_viewer.sequence_controller.json_file.data["Sequence"]["TE"]
         tr = self.sequence_viewer.sequence_controller.json_file.data["Sequence"]["TR"]
 
@@ -63,6 +65,12 @@ class MainWindow(qtw.QMainWindow):
         self.sequence_viewer.sequence_controller.Gx_Slider.setValue(gx)
         self.sequence_viewer.sequence_controller.te_Slider.setValue(te)
         self.sequence_viewer.sequence_controller.tr_Slider.setValue(tr)
+
+        self.sequence_viewer.get_rf_value()
+        self.sequence_viewer.get_slice_selection_value()
+        self.sequence_viewer.get_Gy_value()
+        self.sequence_viewer.get_TE_value()
+        self.sequence_viewer.get_Gx_value()
 
 
 if __name__ == '__main__':
