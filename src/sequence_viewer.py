@@ -50,6 +50,8 @@ class Sequence_Viewer(qtw.QWidget):
         gx = self.sequence_controller.Gx_Slider.value() / 1000
         self.sequence_holder.draw_gx(te, gx)
 
+        self.sequence_holder.draw_read_signal(te)
+
 
     def get_TR_value(self):
         tr = self.sequence_controller.tr_Slider.value()

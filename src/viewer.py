@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 from matplotlib.patches import Rectangle
+import numpy as np
 
 plt.style.use('dark_background')
 mpl.use('Qt5Agg')
@@ -53,5 +54,15 @@ class Sequence_Drawer(FigureCanvas):
         self.axes[4].add_patch(r)
         self.draw()
 
+    def draw_read_signal(self, te=0):
+        start = te - 0.075
+        end = te + 0.075
+        x = np.linspace(start, end, 100)
+        y = 2*np.sinc(1000*(x-te))
+        self.axes[3].clear()
+        self.axes[3].set_xlim(left=0, right=1)
+        self.axes[3].set_ylim(bottom=0, top=1)
+        self.axes[3].plot(x, y, color="red")
+        self.draw()
 
 
