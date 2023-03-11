@@ -1,4 +1,4 @@
-# Fliters & Equalization for images
+#MRI simulation
 - [Features](#features)
 - [Image fliters](#image-fliters-Histogram-Equalization)
     - [Low pass fliter demo](#Low_pass_fliter)

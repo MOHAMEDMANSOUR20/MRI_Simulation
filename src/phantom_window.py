@@ -40,9 +40,7 @@ class PhantomWindow(qtw.QWidget):
         self.PD_holder.mpl_connect('figure_enter_event', self.on_entry)
         self.PD_holder.mpl_connect('button_press_event', self.on_press)
 
-
         self.pop_wind = Pixel_Info()
-
 
         # self.PD_holder.mpl_connect('button_press_event', self.on_press)
 
@@ -59,9 +57,11 @@ class PhantomWindow(qtw.QWidget):
         self.tissue_maping = {0: [500, 40], 24: [500, 40], 255: [250, 70], 49: [4000, 2000], 101: [900, 90],
                               77: [900, 90]}
         self.test_array = np.array(
-            [[2, 3, 5],
-             [5, 10, 7],
-             [1, 8, 2]])
+            [[2, 11, 5, 3, 7],
+             [5, 10, 7, 4, 7],
+             [6, 8, 2, 8, 11],
+             [0, 18, 2, 8, 1]
+                , [4, 8, 20, 8, 11]])
         # self.T2_holder.draw_image(np.abs(np.fft.fft2(self.test_array)))
         self.t1_arr = None
         self.t2_arr = None
@@ -71,6 +71,8 @@ class PhantomWindow(qtw.QWidget):
         phantom_img = cv2.imread(image_path)
         phantom_img = cv2.cvtColor(phantom_img, cv2.COLOR_BGR2GRAY)
         self.phantom_img = phantom_img
+        self.phantom_tabWidget.setCurrentIndex(0)
+        self.Phantom_holder.clear_canvans()
         self.Phantom_holder.draw_image(phantom_img)
         Reconstruction.store_slice(self.test_array)
         self.prepare_properties(phantom_img)

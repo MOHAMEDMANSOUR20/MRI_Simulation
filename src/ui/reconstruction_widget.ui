@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>512</width>
-    <height>438</height>
+    <height>579</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <item row="0" column="0">
     <widget class="QTabWidget" name="reconstruction_tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="k_space_tab">
       <attribute name="title">
@@ -31,7 +31,7 @@
      </widget>
      <widget class="QWidget" name="reconstruction_tab">
       <attribute name="title">
-       <string>Reconstruction</string>
+       <string>Recon K Space</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_3">
        <item row="0" column="0">
