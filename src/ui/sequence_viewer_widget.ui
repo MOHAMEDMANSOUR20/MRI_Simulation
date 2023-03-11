@@ -15,7 +15,17 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
-    <layout class="QVBoxLayout" name="sequence_viewer_Layout"/>
+    <widget class="QSplitter" name="splitter">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <widget class="QWidget" name="layoutWidget">
+      <layout class="QVBoxLayout" name="sequence_viewer_Layout"/>
+     </widget>
+     <widget class="QWidget" name="verticalLayoutWidget_4">
+      <layout class="QVBoxLayout" name="sequence_control_Layout"/>
+     </widget>
+    </widget>
    </item>
   </layout>
  </widget>

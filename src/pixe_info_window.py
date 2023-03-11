@@ -12,8 +12,8 @@ class Pixel_Info(qtw.QDialog):
     def __init__(self):
         super().__init__()
         uic.loadUi("ui/pixel_info_window.ui", self)
-        self.setStyleSheet(qdarkstyle.load_stylesheet(qt_api='pyqt5'))
-        self.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
+        #self.setStyleSheet(qdarkstyle.load_stylesheet(qt_api='pyqt5'))
+        #self.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
 
     def show_properties(self, info_list):
         self.x_info_label.setText(str(info_list[0]))
