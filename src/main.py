@@ -66,11 +66,6 @@ class MainWindow(qtw.QMainWindow):
         self.sequence_viewer.sequence_controller.te_Slider.setValue(te)
         self.sequence_viewer.sequence_controller.tr_Slider.setValue(tr)
 
-        self.sequence_viewer.get_rf_value()
-        self.sequence_viewer.get_slice_selection_value()
-        self.sequence_viewer.get_Gy_value()
-        self.sequence_viewer.get_TE_value()
-        self.sequence_viewer.get_Gx_value()
 
 
 if __name__ == '__main__':

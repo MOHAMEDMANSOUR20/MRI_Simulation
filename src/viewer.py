@@ -56,7 +56,7 @@ class Sequence_Drawer(FigureCanvas):
         start = te - width / 2
         self.axes[4].clear()
         self.axes[4].set_ylabel("Gx", size=15)
-        r = Rectangle((start, 0), width, gx, edgecolor='orange')
+        r = Rectangle((start, 0), width, 0.95*gx, edgecolor='orange', linewidth=2)
         Rectangle.set_fill(r, False)
         self.axes[4].add_patch(r)
         self.draw()
@@ -65,33 +65,33 @@ class Sequence_Drawer(FigureCanvas):
         start = te - 0.075
         end = te + 0.075
         x = np.linspace(start, end, 100)
-        y = 2.4 * np.sinc(1000 * (x - te))
+        y = 0.85 * np.sinc(100 * (x - te))
         self.axes[3].clear()
         self.axes[3].set_xlim(left=0, right=1)
         self.axes[3].set_ylim(bottom=0, top=1)
-        self.axes[3].plot(x, y, color="blue")
+        self.axes[3].plot(x, y, color="blue", linewidth=2)
         self.axes[3].set_ylabel("Signal", size=15)
         self.draw()
 
     def draw_slice_selection(self, slice):
         width = 0.15
-        hight = 0.55
-        start = slice - width / 2
+        start = 0.004
         self.axes[1].clear()
-        r = Rectangle((start, 0), width, hight, edgecolor='green')
+        r = Rectangle((start, 0), width, 0.95*slice, edgecolor='green', linewidth=2)
         self.axes[1].set_ylabel("Slice", size=15)
         Rectangle.set_fill(r, False)
         self.axes[1].add_patch(r)
         self.draw()
 
     def draw_rf(self, rf):
-        x = np.array([0, 0.03, 0.09, 0.12])
-        y = np.array([0, 0.7, 0, 0.5])
-        y = rf * y
+        start = 0
+        end = 0.15
+        x = np.linspace(start, end, 100)
+        y = 0.85 * rf * np.sinc(100 * (x - 0.075))
         self.axes[0].clear()
         self.axes[0].set_xlim(left=0, right=1)
         self.axes[0].set_ylim(bottom=0, top=1)
-        self.axes[0].plot(x, y, color="red")
+        self.axes[0].plot(x, y, color="red", linewidth=2)
         self.axes[0].set_ylabel("RF", size=15)
         self.draw()
 
