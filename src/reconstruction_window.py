@@ -30,38 +30,42 @@ class Reconstruction(qtw.QWidget):
             num_row = phantom_img.shape[0]
             num_column = phantom_img.shape[1]
             img_vectors = np.ones((num_row, num_column, 3))
-            img_vectors[:, :, 2] = img_vectors[:, :, 2] * phantom_img
+            img_vectors[:, :, 2] = phantom_img
             img_vectors[:, :, 0] = 0
             img_vectors[:, :, 1] = 0
             step_inGY = 2 * self.PI / num_row
             step_inGx = 2 * self.PI / num_column
             vector_sum = np.empty(num_column, dtype=complex)
             vector_summation = np.zeros((num_row, num_column), dtype=complex)
-            for i in range(-int((num_row - 1) / 2), int((num_row - 1) / 2) + 1):
-                R_forRF = self.Rotation_matrix.RX(self.PI / 2).T
+            img_vector_changed = img_vectors.copy()
+            for i in range(num_row):
+                R_forRF = self.Rotation_matrix.RY(self.PI / 2).T
                 img_vector_changed = np.matmul(img_vectors, R_forRF)
-                for i_inner in range(-int((num_row - 1) / 2), int((num_row - 1) / 2) + 1):
+                for i_inner in range(num_row):
                     R_forGY = self.Rotation_matrix.RZ(i_inner * step_inGY * i).T
-                    img_vector_changed[i_inner + int((num_column - 1) / 2), :, :] = \
-                        np.matmul(img_vector_changed[i_inner + int((num_column - 1) / 2), :, :], R_forGY)
+                    img_vector_changed[i_inner, :, :] = \
+                        np.matmul(img_vector_changed[i_inner, :, :], R_forGY)
                     # R_Ref = self.Rotation_matrix.RZ(-1 * step_inGx * int((num_column - 1) / 2)).T
                     # img_vector_changed = np.matmul(img_vector_changed, R_Ref)
                 for j in range(num_column):
                     img_vector_changed_x = img_vector_changed.copy()
-                    for j_inner in range(-int((num_column - 1) / 2), int((num_column - 1) / 2) + 1):
-                        R_forGX = self.Rotation_matrix.RZ(step_inGx * j_inner * (j + int((num_column - 1) / 2) + 1)).T
-                        img_vector_changed_x[:, j_inner + int((num_column - 1) / 2), :] = \
-                            np.matmul(img_vector_changed_x[:, j_inner + int((num_column - 1) / 2), :], R_forGX)
+                    for j_inner in range(num_column):
+                        R_forGX = self.Rotation_matrix.RZ(step_inGx * j_inner*j).T
+                        img_vector_changed_x[:, j_inner, :] = \
+                            np.matmul(img_vector_changed_x[:, j_inner, :], R_forGX)
                     x_sum = np.sum(img_vector_changed_x[:, :, 0])
                     y_sum = np.sum(img_vector_changed_x[:, :, 1])
-                    vector_sum[j] = np.complex(x_sum, y_sum)
+                    vector_sum[-j] = np.complex(x_sum, y_sum)
 
-                vector_summation[i + int((num_row - 1) / 2)] = vector_sum
+                vector_summation[-i] = vector_sum
+                # img_vector_changed = np.matmul(img_vector_changed, -1 * R_forRF)
             self.Reconstruction_holder.clear_canvans()
             self.K_Space_holder.clear_canvans()
+            # print((np.fft.fftshift(vector_summation)))
+            # print(np.fft.fftshift(np.fft.fft2(Reconstruction.test_image)))
             # reconstruced_slice = np.abs(np.fft.ifft2(np.fft.ifftshift(vector_summation)))
-            self.Reconstruction_holder.draw_image(np.abs(vector_summation))
-            self.K_Space_holder.draw_image(np.abs(np.fft.fftshift(np.fft.fft2(Reconstruction.test_image))))
+            self.K_Space_holder.draw_image(np.abs(np.fft.fftshift(vector_summation)))
+            self.Reconstruction_holder.draw_image(np.abs(np.fft.ifft2(vector_summation)))
 
         else:
             QtWidgets.QMessageBox.about(

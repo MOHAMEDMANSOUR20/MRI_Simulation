@@ -21,10 +21,10 @@ class Viewer(FigureCanvas):
             self.axes.spines[spine].set_color('gray')
 
         self.axes.axis('off')
-        self.img = None
+        self.rec = None
 
     def draw_image(self, img, vmin=None, vmax=None):
-        self.img = self.axes.imshow(img, cmap='gray', vmin=vmin, vmax=vmax, aspect='auto')
+        self.axes.imshow(img, cmap='gray', vmin=vmin, vmax=vmax, aspect='auto')
         self.draw()
 
     def update_image(self, img):
@@ -35,9 +35,20 @@ class Viewer(FigureCanvas):
         self.axes.clear()
         self.draw()
 
-    def draw_histogram(self, img):
-        self.axes.hist(img, bins=5)
+    def show_rectangle(self, startx, starty, width, height):
+        self.rec = Rectangle((startx, starty), width, height, edgecolor="r", linewidth=1)
+        Rectangle.set_fill(self.rec, False)
+        self.axes.add_patch(self.rec)
+        self.rec.set_visible(True)
         self.draw()
+
+    def remove_rectangle(self):
+        try:
+            self.rec.remove()
+            self.draw()
+
+        except:
+            pass
 
 
 class Sequence_Drawer(FigureCanvas):
@@ -56,7 +67,7 @@ class Sequence_Drawer(FigureCanvas):
         start = te - width / 2
         self.axes[4].clear()
         self.axes[4].set_ylabel("Gx", size=15)
-        r = Rectangle((start, 0), width, 0.95*gx, edgecolor='orange', linewidth=2)
+        r = Rectangle((start, 0), width, 0.95 * gx, edgecolor='orange', linewidth=2)
         Rectangle.set_fill(r, False)
         self.axes[4].add_patch(r)
         self.draw()
@@ -77,7 +88,7 @@ class Sequence_Drawer(FigureCanvas):
         width = 0.15
         start = 0.004
         self.axes[1].clear()
-        r = Rectangle((start, 0), width, 0.95*slice, edgecolor='green', linewidth=2)
+        r = Rectangle((start, 0), width, 0.95 * slice, edgecolor='green', linewidth=2)
         self.axes[1].set_ylabel("Slice", size=15)
         Rectangle.set_fill(r, False)
         self.axes[1].add_patch(r)
@@ -97,20 +108,18 @@ class Sequence_Drawer(FigureCanvas):
 
     def draw_gy(self, img_rows, gy):
         width = 0.15
-        start = gy - width/2
+        start = gy - width / 2
         delta_hight = 0.95 / img_rows
         self.axes[2].clear()
         self.axes[2].set_xlim(left=0, right=1)
         self.axes[2].set_ylim(bottom=0, top=1)
         for i in range(img_rows):
-            hight = (i+1) * delta_hight
+            hight = (i + 1) * delta_hight
             r = Rectangle((start, 0), width, hight, edgecolor='yellow')
             Rectangle.set_fill(r, False)
             self.axes[2].add_patch(r)
         self.axes[2].set_ylabel("Gy", size=15)
         self.draw()
-
-
 
     def animate_image(self, fig, update, init, frames):
         ani = animation.FuncAnimation(fig, update, frames=frames, init_func=init, blit=True)

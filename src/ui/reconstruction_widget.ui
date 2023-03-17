@@ -31,7 +31,7 @@
      </widget>
      <widget class="QWidget" name="reconstruction_tab">
       <attribute name="title">
-       <string>Recon K Space</string>
+       <string>Reconstruction Phantom</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_3">
        <item row="0" column="0">

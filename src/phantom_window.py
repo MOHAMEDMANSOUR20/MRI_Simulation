@@ -53,28 +53,27 @@ class PhantomWindow(qtw.QWidget):
         # initialization
         self.phantom_img = None
         self.PI = math.pi
+        self.widgets = [self.Phantom_holder, self.T1_holder, self.T2_holder, self.PD_holder]
+        self.previous_widget = 0
         self.unique_pixels = [0, 24, 255, 49, 101, 77]
         self.tissue_maping = {0: [500, 40], 24: [500, 40], 255: [250, 70], 49: [4000, 2000], 101: [900, 90],
                               77: [900, 90]}
         self.test_array = np.array(
-            [[2, 11, 5, 3, 7],
-             [5, 10, 7, 4, 7],
-             [6, 8, 2, 8, 11],
-             [0, 18, 2, 8, 1]
-                , [4, 8, 20, 8, 11]])
+            [[5, 3, 7],
+             [20, 4, 7],
+             [6, 8, 2],
+             ])
         # self.T2_holder.draw_image(np.abs(np.fft.fft2(self.test_array)))
         self.t1_arr = None
         self.t2_arr = None
         self.is_prepared = False
 
-    def load_phantom_image(self, image_path):
-        phantom_img = cv2.imread(image_path)
-        phantom_img = cv2.cvtColor(phantom_img, cv2.COLOR_BGR2GRAY)
+    def phantom_image(self, phantom_img):
         self.phantom_img = phantom_img
         self.phantom_tabWidget.setCurrentIndex(0)
         self.Phantom_holder.clear_canvans()
         self.Phantom_holder.draw_image(phantom_img)
-        Reconstruction.store_slice(self.test_array)
+        Reconstruction.store_slice(phantom_img)
         self.prepare_properties(phantom_img)
 
     def prepare_properties(self, phantom_img):
@@ -84,21 +83,34 @@ class PhantomWindow(qtw.QWidget):
         for i in self.unique_pixels:
             self.t1_arr[self.t1_arr == i] = self.tissue_maping[i][0]
             self.t2_arr[self.t2_arr == i] = self.tissue_maping[i][1]
-        self.is_prepard = True
+
         self.T1_holder.draw_image(self.t1_arr)
         self.T2_holder.draw_image(self.t2_arr)
         self.PD_holder.draw_image(self.pd_arr, vmax=1, vmin=0)
+        self.is_prepard = True
 
         # self.apply_sequence(self.test_array)
 
     def on_press(self, event):
-        if self.is_prepard:
+        try:
+            self.pop_wind.close()
             xdata = int(event.xdata)
             ydata = int(event.ydata)
+            step = int(self.phantom_img.shape[0] * 0.05)
+            self.widgets[self.previous_widget].remove_rectangle()
+
+            self.widgets[self.phantom_tabWidget.currentIndex()].show_rectangle(xdata, ydata, step, step)
 
             self.pop_wind.show_properties(
                 [xdata, ydata, self.t1_arr[ydata, xdata], self.t2_arr[ydata, xdata], self.pd_arr[ydata, xdata]])
+            self.previous_widget = self.phantom_tabWidget.currentIndex()
+        except:
+            pass
 
     def on_entry(self, event):
-        if self.is_prepard:
-            self.pop_wind.hide()
+        try:
+            self.widgets[self.phantom_tabWidget.currentIndex()].remove_rectangle()
+            print(self.phantom_tabWidget.currentIndex())
+            self.pop_wind.clearFocus()
+        except:
+            pass

@@ -1,3 +1,4 @@
+import cv2
 from PyQt5 import QtWidgets as qtw
 from PyQt5 import uic
 from viewer import Viewer
@@ -18,8 +19,8 @@ class MainWindow(qtw.QMainWindow):
 
         uic.loadUi("ui/MRI_Simulator_GUI.ui", self)
 
-        #self.setStyleSheet(qdarkstyle.load_stylesheet(qt_api='pyqt5'))
-        #self.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
+        # self.setStyleSheet(qdarkstyle.load_stylesheet(qt_api='pyqt5'))
+        # self.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
         self.phantom_window = PhantomWindow()
         self.reconstruction_window = Reconstruction()
         self.phantom_img_Layout.addWidget(self.phantom_window)
@@ -27,9 +28,9 @@ class MainWindow(qtw.QMainWindow):
         self.sequence_viewer = Sequence_Viewer()
         self.sequence_Layout.addWidget(self.sequence_viewer)
 
-
         # Actions
-        self.sequence_viewer.sequence_controller.Simulate_Button.clicked.connect(self.reconstruction_window.apply_sequence)
+        self.sequence_viewer.sequence_controller.Simulate_Button.clicked.connect(
+            self.reconstruction_window.apply_sequence)
         self.action_Phantom.triggered.connect(self.Load_phantom_file)
         self.action_Sequence.triggered.connect(self.Load_sequence_file)
 
@@ -37,16 +38,19 @@ class MainWindow(qtw.QMainWindow):
         # self.sequence_controller.export_Button.clicked.connect(self.pop_wind.show)
         # self.sequence_controller.Simulate_Button.clicked.connect(self.pop_wind.close)
 
-
     @pyqtSlot()
     def Load_phantom_file(self):
         image_path = qtw.QFileDialog.getOpenFileName(filter="Image (*.*)")[0]
-        self.phantom_window.load_phantom_image(image_path)
+        phantom_img = cv2.imread(image_path)
+        phantom_img = cv2.cvtColor(phantom_img, cv2.COLOR_BGR2GRAY)
+        phantom_img = cv2.resize(phantom_img, (20, 20))
+        self.send_to_phantom_window(phantom_img)
+
+    def send_to_phantom_window(self, phantom):
+        self.phantom_window.phantom_image(phantom)
         self.reconstruction_window.Reconstruction_holder.clear_canvans()
         self.reconstruction_window.K_Space_holder.clear_canvans()
-        img = self.phantom_window.phantom_img
-        self.sequence_viewer.img_shape = img.shape
-
+        self.sequence_viewer.img_shape = phantom.shape
 
     @pyqtSlot()
     def Load_sequence_file(self):
@@ -65,7 +69,6 @@ class MainWindow(qtw.QMainWindow):
         self.sequence_viewer.sequence_controller.Gx_Slider.setValue(gx)
         self.sequence_viewer.sequence_controller.te_Slider.setValue(te)
         self.sequence_viewer.sequence_controller.tr_Slider.setValue(tr)
-
 
 
 if __name__ == '__main__':
