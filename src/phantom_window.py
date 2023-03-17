@@ -99,7 +99,7 @@ class PhantomWindow(qtw.QWidget):
             step = int(self.phantom_img.shape[0] * 0.05)
             self.widgets[self.previous_widget].remove_rectangle()
 
-            self.widgets[self.phantom_tabWidget.currentIndex()].show_rectangle(xdata, ydata, step, step)
+            self.widgets[self.phantom_tabWidget.currentIndex()].show_rectangle(xdata-int(step/2), ydata+int(step/2), step, step)
 
             self.pop_wind.show_properties(
                 [xdata, ydata, self.t1_arr[ydata, xdata], self.t2_arr[ydata, xdata], self.pd_arr[ydata, xdata]])
@@ -109,8 +109,8 @@ class PhantomWindow(qtw.QWidget):
 
     def on_entry(self, event):
         try:
-            self.widgets[self.phantom_tabWidget.currentIndex()].remove_rectangle()
-            print(self.phantom_tabWidget.currentIndex())
-            self.pop_wind.clearFocus()
+            if not self.pop_wind.isVisible():
+                self.widgets[self.phantom_tabWidget.currentIndex()].remove_rectangle()
+                print(self.phantom_tabWidget.currentIndex())
         except:
             pass
