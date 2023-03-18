@@ -37,7 +37,6 @@ class Reconstruction(qtw.QWidget):
             step_inGx = 2 * self.PI / num_column
             vector_sum = np.empty(num_column, dtype=complex)
             vector_summation = np.zeros((num_row, num_column), dtype=complex)
-            img_vector_changed = img_vectors.copy()
             for i in range(num_row):
                 R_forRF = self.Rotation_matrix.RY(self.PI / 2).T
                 img_vector_changed = np.matmul(img_vectors, R_forRF)
@@ -45,12 +44,10 @@ class Reconstruction(qtw.QWidget):
                     R_forGY = self.Rotation_matrix.RZ(i_inner * step_inGY * i).T
                     img_vector_changed[i_inner, :, :] = \
                         np.matmul(img_vector_changed[i_inner, :, :], R_forGY)
-                    # R_Ref = self.Rotation_matrix.RZ(-1 * step_inGx * int((num_column - 1) / 2)).T
-                    # img_vector_changed = np.matmul(img_vector_changed, R_Ref)
                 for j in range(num_column):
                     img_vector_changed_x = img_vector_changed.copy()
                     for j_inner in range(num_column):
-                        R_forGX = self.Rotation_matrix.RZ(step_inGx * j_inner*j).T
+                        R_forGX = self.Rotation_matrix.RZ(step_inGx * j_inner * j).T
                         img_vector_changed_x[:, j_inner, :] = \
                             np.matmul(img_vector_changed_x[:, j_inner, :], R_forGX)
                     x_sum = np.sum(img_vector_changed_x[:, :, 0])

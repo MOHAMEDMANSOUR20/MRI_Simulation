@@ -42,9 +42,8 @@ class PhantomWindow(qtw.QWidget):
 
         self.pop_wind = Pixel_Info()
 
-        # self.PD_holder.mpl_connect('button_press_event', self.on_press)
+        self.img_qual_comboBox.activated.connect(self.change_size)
 
-        # self.filters_list.activated.connect(self.image_transformation)
         # self.modes_list.activated.connect(self.image_transformation)
 
         # self.kernal_btn.clicked.connect(self.apply_kernal)
@@ -54,6 +53,7 @@ class PhantomWindow(qtw.QWidget):
         self.phantom_img = None
         self.PI = math.pi
         self.widgets = [self.Phantom_holder, self.T1_holder, self.T2_holder, self.PD_holder]
+        self.image_size = [16, 32, 64]
         self.previous_widget = 0
         self.unique_pixels = [0, 24, 255, 49, 101, 77]
         self.tissue_maping = {0: [500, 40], 24: [500, 40], 255: [250, 70], 49: [4000, 2000], 101: [900, 90],
@@ -68,13 +68,13 @@ class PhantomWindow(qtw.QWidget):
         self.t2_arr = None
         self.is_prepared = False
 
-    def phantom_image(self, phantom_img):
+    def phantom_image(self, phantom_img, resized):
         self.phantom_img = phantom_img
         self.phantom_tabWidget.setCurrentIndex(0)
         self.Phantom_holder.clear_canvans()
-        self.Phantom_holder.draw_image(phantom_img)
-        Reconstruction.store_slice(phantom_img)
-        self.prepare_properties(phantom_img)
+        self.Phantom_holder.draw_image(resized)
+        Reconstruction.store_slice(resized)
+        self.prepare_properties(resized)
 
     def prepare_properties(self, phantom_img):
         self.t1_arr = np.array(phantom_img).astype(np.int16)
@@ -96,10 +96,12 @@ class PhantomWindow(qtw.QWidget):
             self.pop_wind.close()
             xdata = int(event.xdata)
             ydata = int(event.ydata)
-            step = int(self.phantom_img.shape[0] * 0.05)
+            size = self.image_size[self.img_qual_comboBox.currentIndex()]
+            step = size * 0.05
             self.widgets[self.previous_widget].remove_rectangle()
 
-            self.widgets[self.phantom_tabWidget.currentIndex()].show_rectangle(xdata-int(step/2), ydata+int(step/2), step, step)
+            self.widgets[self.phantom_tabWidget.currentIndex()].show_rectangle(xdata - int(step / 2),
+                                                                               ydata + int(step / 2), step, step)
 
             self.pop_wind.show_properties(
                 [xdata, ydata, self.t1_arr[ydata, xdata], self.t2_arr[ydata, xdata], self.pd_arr[ydata, xdata]])
@@ -112,5 +114,14 @@ class PhantomWindow(qtw.QWidget):
             if not self.pop_wind.isVisible():
                 self.widgets[self.phantom_tabWidget.currentIndex()].remove_rectangle()
                 print(self.phantom_tabWidget.currentIndex())
+        except:
+            pass
+
+    def change_size(self):
+        try:
+            size = self.image_size[self.img_qual_comboBox.currentIndex()]
+            phantom_img = cv2.resize(self.phantom_img, (size, size))
+            self.phantom_image(self.phantom_img, phantom_img)
+
         except:
             pass

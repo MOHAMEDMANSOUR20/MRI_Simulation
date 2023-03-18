@@ -95,7 +95,23 @@
       </spacer>
      </item>
      <item>
-      <widget class="QComboBox" name="img_qual_comboBox"/>
+      <widget class="QComboBox" name="img_qual_comboBox">
+       <item>
+        <property name="text">
+         <string>16 x 16 </string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>32 x 32</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>64 x 64</string>
+        </property>
+       </item>
+      </widget>
      </item>
      <item>
       <spacer name="horizontalSpacer_2">

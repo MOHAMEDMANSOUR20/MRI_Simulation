@@ -33,6 +33,7 @@ class MainWindow(qtw.QMainWindow):
             self.reconstruction_window.apply_sequence)
         self.action_Phantom.triggered.connect(self.Load_phantom_file)
         self.action_Sequence.triggered.connect(self.Load_sequence_file)
+        self.phantom_window.img_qual_comboBox.activated.connect(self.change_size)
 
         # Just for trying pop out window
         # self.sequence_controller.export_Button.clicked.connect(self.pop_wind.show)
@@ -40,14 +41,23 @@ class MainWindow(qtw.QMainWindow):
 
     @pyqtSlot()
     def Load_phantom_file(self):
-        image_path = qtw.QFileDialog.getOpenFileName(filter="Image (*.*)")[0]
-        phantom_img = cv2.imread(image_path)
-        phantom_img = cv2.cvtColor(phantom_img, cv2.COLOR_BGR2GRAY)
-        phantom_img = cv2.resize(phantom_img, (20, 20))
-        self.send_to_phantom_window(phantom_img)
+        try:
+            image_path = qtw.QFileDialog.getOpenFileName(filter="Image (*.*)")[0]
+            phantom_img = cv2.imread(image_path)
+            phantom_img = cv2.cvtColor(phantom_img, cv2.COLOR_BGR2GRAY)
+            size = self.phantom_window.image_size[self.phantom_window.img_qual_comboBox.currentIndex()]
+            phantom_img_resized = cv2.resize(phantom_img, (size, size))
+            self.send_to_phantom_window(phantom_img, phantom_img_resized)
+        except:
+            pass
 
-    def send_to_phantom_window(self, phantom):
-        self.phantom_window.phantom_image(phantom)
+    def change_size(self):
+        size = self.phantom_window.image_size[self.phantom_window.img_qual_comboBox.currentIndex()]
+        self.reconstruction_window.K_Space_holder.clear_canvans()
+        self.reconstruction_window.Reconstruction_holder.clear_canvans()
+
+    def send_to_phantom_window(self, phantom, resized):
+        self.phantom_window.phantom_image(phantom, resized)
         self.reconstruction_window.Reconstruction_holder.clear_canvans()
         self.reconstruction_window.K_Space_holder.clear_canvans()
         self.sequence_viewer.img_shape = phantom.shape
