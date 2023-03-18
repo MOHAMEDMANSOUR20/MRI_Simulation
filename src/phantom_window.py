@@ -42,7 +42,7 @@ class PhantomWindow(qtw.QWidget):
 
         self.pop_wind = Pixel_Info()
 
-        self.img_qual_comboBox.activated.connect(self.change_size)
+        # self.img_qual_comboBox.activated.connect(self.change_size)
 
         # self.modes_list.activated.connect(self.image_transformation)
 

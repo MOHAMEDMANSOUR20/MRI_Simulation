@@ -52,9 +52,12 @@ class MainWindow(qtw.QMainWindow):
             pass
 
     def change_size(self):
-        size = self.phantom_window.image_size[self.phantom_window.img_qual_comboBox.currentIndex()]
         self.reconstruction_window.K_Space_holder.clear_canvans()
         self.reconstruction_window.Reconstruction_holder.clear_canvans()
+        self.phantom_window.change_size()
+        size = self.phantom_window.image_size[self.phantom_window.img_qual_comboBox.currentIndex()]
+        # for you ,mansor size is integer 16 or 32 or 64
+
 
     def send_to_phantom_window(self, phantom, resized):
         self.phantom_window.phantom_image(phantom, resized)
