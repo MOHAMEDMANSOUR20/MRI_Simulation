@@ -78,7 +78,7 @@ class Sequence_Drawer(FigureCanvas):
         x = np.linspace(start, end, 100)
         y = 0.85 * np.sinc(100 * (x - te))
         self.axes[3].clear()
-        self.axes[3].set_xlim(left=0, right=1)
+        #self.axes[3].set_xlim(left=0, right=2)
         self.axes[3].set_ylim(bottom=0, top=1)
         self.axes[3].plot(x, y, color="blue", linewidth=2)
         self.axes[3].set_ylabel("Signal", size=15)
@@ -94,13 +94,13 @@ class Sequence_Drawer(FigureCanvas):
         self.axes[1].add_patch(r)
         self.draw()
 
-    def draw_rf(self, rf):
+    def draw_rf(self, rf, tr):
         start = 0
         end = 0.15
         x = np.linspace(start, end, 100)
         y = 0.85 * rf * np.sinc(100 * (x - 0.075))
         self.axes[0].clear()
-        self.axes[0].set_xlim(left=0, right=1)
+        self.axes[0].set_xlim(left=0, right=tr)
         self.axes[0].set_ylim(bottom=0, top=1)
         self.axes[0].plot(x, y, color="red", linewidth=2)
         self.axes[0].set_ylabel("RF", size=15)
@@ -111,7 +111,7 @@ class Sequence_Drawer(FigureCanvas):
         start = gy - width / 2
         delta_hight = 0.95 / img_rows
         self.axes[2].clear()
-        self.axes[2].set_xlim(left=0, right=1)
+        #self.axes[2].set_xlim(left=0, right=1)
         self.axes[2].set_ylim(bottom=0, top=1)
         for i in range(img_rows):
             hight = (i + 1) * delta_hight
@@ -120,6 +120,14 @@ class Sequence_Drawer(FigureCanvas):
             self.axes[2].add_patch(r)
         self.axes[2].set_ylabel("Gy", size=15)
         self.draw()
+
+    def set_tr(self, tr):
+        self.axes[0].set_xlim(left=0, right=tr)
+        self.axes[1].set_xlim(left=0, right=tr)
+        self.axes[2].set_xlim(left=0, right=tr)
+        self.axes[3].set_xlim(left=0, right=tr)
+        self.axes[4].set_xlim(left=0, right=tr)
+        #self.draw()
 
     def animate_image(self, fig, update, init, frames):
         ani = animation.FuncAnimation(fig, update, frames=frames, init_func=init, blit=True)

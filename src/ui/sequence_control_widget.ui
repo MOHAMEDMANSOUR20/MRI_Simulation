@@ -18,6 +18,53 @@
     <layout class="QVBoxLayout" name="verticalLayout_3" stretch="2,1">
      <item>
       <layout class="QGridLayout" name="gridLayout">
+       <item row="5" column="1">
+        <widget class="QSlider" name="tr_Slider">
+         <property name="minimum">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <number>40</number>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QSlider" name="Slice_Selection_Slider">
+         <property name="maximum">
+          <number>999</number>
+         </property>
+         <property name="singleStep">
+          <number>1</number>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="te_label">
+         <property name="text">
+          <string>TE</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="tr_label">
+         <property name="text">
+          <string>TR</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="Gy_label">
+         <property name="text">
+          <string>Gy</string>
+         </property>
+        </widget>
+       </item>
        <item row="4" column="1">
         <widget class="QSlider" name="te_Slider">
          <property name="maximum">
@@ -32,20 +79,6 @@
         <widget class="QLabel" name="Slice_selection_label">
          <property name="text">
           <string>Slice Selection</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="RF_label">
-         <property name="text">
-          <string>RF</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0">
-        <widget class="QLabel" name="Gx_label">
-         <property name="text">
-          <string>Gx</string>
          </property>
         </widget>
        </item>
@@ -79,47 +112,77 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="Gy_label">
+       <item row="3" column="0">
+        <widget class="QLabel" name="Gx_label">
          <property name="text">
-          <string>Gy</string>
+          <string>Gx</string>
          </property>
         </widget>
        </item>
-       <item row="1" column="1">
-        <widget class="QSlider" name="Slice_Selection_Slider">
-         <property name="maximum">
-          <number>999</number>
-         </property>
-         <property name="singleStep">
-          <number>1</number>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="0">
-        <widget class="QLabel" name="te_label">
+       <item row="0" column="0">
+        <widget class="QLabel" name="RF_label">
          <property name="text">
-          <string>TE</string>
+          <string>RF</string>
          </property>
         </widget>
        </item>
-       <item row="5" column="1">
-        <widget class="QSlider" name="tr_Slider">
-         <property name="maximum">
-          <number>1000</number>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="0">
-        <widget class="QLabel" name="tr_label">
+       <item row="0" column="2">
+        <widget class="QLabel" name="rf_val_label">
          <property name="text">
-          <string>TR</string>
+          <string>radian</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="2">
+        <widget class="QLabel" name="slice_val_label">
+         <property name="text">
+          <string>radian</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="2">
+        <widget class="QLabel" name="gy_val_label">
+         <property name="text">
+          <string>radian</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="2">
+        <widget class="QLabel" name="gx_val_label">
+         <property name="text">
+          <string>radian</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="2">
+        <widget class="QLabel" name="te_val_label">
+         <property name="text">
+          <string>ms</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="2">
+        <widget class="QLabel" name="tr_val_label">
+         <property name="text">
+          <string>ms</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>

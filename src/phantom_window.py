@@ -68,7 +68,7 @@ class PhantomWindow(qtw.QWidget):
         self.t2_arr = None
         self.is_prepared = False
 
-    def phantom_image(self, phantom_img, resized):
+    def draw_phantom_image(self, phantom_img, resized):
         self.phantom_img = phantom_img
         self.phantom_tabWidget.setCurrentIndex(0)
         self.Phantom_holder.clear_canvans()
@@ -120,8 +120,8 @@ class PhantomWindow(qtw.QWidget):
     def change_size(self):
         try:
             size = self.image_size[self.img_qual_comboBox.currentIndex()]
-            phantom_img = cv2.resize(self.phantom_img, (size, size))
-            self.phantom_image(self.phantom_img, phantom_img)
+            resized_img = cv2.resize(self.phantom_img, (size, size))
+            self.draw_phantom_image(self.phantom_img, resized_img)
 
         except:
             pass

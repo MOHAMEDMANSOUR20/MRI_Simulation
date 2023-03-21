@@ -10,7 +10,7 @@ class Sequence_Viewer(qtw.QWidget):
         super().__init__()
 
         uic.loadUi("ui/sequence_viewer_widget.ui", self)
-        self.img_shape = [-1, -1, -1]
+        self.img_shape = [0,0]
         self.sequence_controller = Sequence_Controller()
         self.sequence_control_Layout.addWidget(self.sequence_controller)
 
@@ -26,9 +26,10 @@ class Sequence_Viewer(qtw.QWidget):
 
     def get_rf_value(self):
         rf = self.sequence_controller.RF_Slider.value()
+        tr = self.sequence_controller.tr_Slider.value()
         self.sequence_controller.json_file.data["Sequence"]["RF"] = rf
         rf = rf / 1000
-        self.sequence_holder.draw_rf(rf)
+        self.sequence_holder.draw_rf(rf, tr)
 
     def get_slice_selection_value(self):
         slice = self.sequence_controller.Slice_Selection_Slider.value()
@@ -39,24 +40,29 @@ class Sequence_Viewer(qtw.QWidget):
 
     def get_Gy_value(self):
         gy = self.sequence_controller.Gy_Slider.value()
+        tr = self.sequence_controller.tr_Slider.value()
         self.sequence_controller.json_file.data["Sequence"]["GY"] = gy
-        gy = gy / 1000
+        gy = tr * gy / 1000
         img_rows = self.img_shape[0]
-        self.sequence_holder.draw_gy(img_rows, gy)
+        if img_rows > 0:
+            self.sequence_holder.draw_gy(img_rows, gy)
 
 
     def get_Gx_value(self):
         gx = self.sequence_controller.Gx_Slider.value()
+        tr = self.sequence_controller.tr_Slider.value()
         self.sequence_controller.json_file.data["Sequence"]["GX"] = gx
-        te = self.sequence_controller.json_file.data["Sequence"]["TE"] / 1000
+        te = self.sequence_controller.te_Slider.value() * tr / 1000
+
         gx = gx / 1000
         self.sequence_holder.draw_gx(te, gx)
 
     def get_TE_value(self):
         te = self.sequence_controller.te_Slider.value()
+        tr = self.sequence_controller.tr_Slider.value()
         self.sequence_controller.json_file.data["Sequence"]["TE"] = te
-        te = te/1000
-
+        te = tr * te/1000
+        self.sequence_controller.te_val_label.setText(f"{te} ms")
         gx = self.sequence_controller.Gx_Slider.value() / 1000
         self.sequence_holder.draw_gx(te, gx)
 
@@ -65,5 +71,10 @@ class Sequence_Viewer(qtw.QWidget):
 
     def get_TR_value(self):
         tr = self.sequence_controller.tr_Slider.value()
-        self.sequence_controller.json_file.data["Sequence"]["TE"] = tr
+        self.sequence_controller.json_file.data["Sequence"]["TR"] = tr
+        self.sequence_controller.tr_val_label.setText(f"{tr} ms")
+        self.sequence_holder.set_tr(tr)
+        self.get_TE_value()
+        self.get_Gy_value()
+
 

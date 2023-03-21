@@ -51,19 +51,27 @@ class MainWindow(qtw.QMainWindow):
         except:
             pass
 
+
     def change_size(self):
         self.reconstruction_window.K_Space_holder.clear_canvans()
         self.reconstruction_window.Reconstruction_holder.clear_canvans()
-        self.phantom_window.change_size()
-        size = self.phantom_window.image_size[self.phantom_window.img_qual_comboBox.currentIndex()]
-        # for you ,mansor size is integer 16 or 32 or 64
+        if self.reconstruction_window.image_opened:
+            self.phantom_window.change_size()
+            size = self.phantom_window.image_size[self.phantom_window.img_qual_comboBox.currentIndex()]
+            self.sequence_viewer.img_shape[0] = size
+            if self.sequence_viewer.sequence_controller.Gy_Slider.value() != 0:
+                self.sequence_viewer.get_Gy_value()
+
+
+
 
 
     def send_to_phantom_window(self, phantom, resized):
-        self.phantom_window.phantom_image(phantom, resized)
+        self.phantom_window.draw_phantom_image(phantom, resized)
         self.reconstruction_window.Reconstruction_holder.clear_canvans()
         self.reconstruction_window.K_Space_holder.clear_canvans()
-        self.sequence_viewer.img_shape = phantom.shape
+        self.sequence_viewer.img_shape[0] = resized.shape[0]
+
 
     @pyqtSlot()
     def Load_sequence_file(self):
@@ -76,12 +84,13 @@ class MainWindow(qtw.QMainWindow):
         te = self.sequence_viewer.sequence_controller.json_file.data["Sequence"]["TE"]
         tr = self.sequence_viewer.sequence_controller.json_file.data["Sequence"]["TR"]
 
+        self.sequence_viewer.sequence_controller.tr_Slider.setValue(tr)
         self.sequence_viewer.sequence_controller.RF_Slider.setValue(rf)
         self.sequence_viewer.sequence_controller.Slice_Selection_Slider.setValue(slice)
         self.sequence_viewer.sequence_controller.Gy_Slider.setValue(gy)
         self.sequence_viewer.sequence_controller.Gx_Slider.setValue(gx)
         self.sequence_viewer.sequence_controller.te_Slider.setValue(te)
-        self.sequence_viewer.sequence_controller.tr_Slider.setValue(tr)
+
 
 
 if __name__ == '__main__':
