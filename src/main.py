@@ -31,6 +31,15 @@ class MainWindow(qtw.QMainWindow):
         # Actions
         self.sequence_viewer.sequence_controller.Simulate_Button.clicked.connect(
             self.reconstruction_window.apply_sequence)
+        self.reconstruction_window.brightness_Slider.valueChanged.connect(self.phantom_window.change_brightness)
+        self.reconstruction_window.brightness_Slider.valueChanged.connect(self.reconstruction_window.change_brightness)
+        self.reconstruction_window.contrast_Slider.valueChanged.connect(self.phantom_window.change_contrast)
+        self.reconstruction_window.contrast_Slider.valueChanged.connect(self.reconstruction_window.change_contrast)
+        self.reconstruction_window.change_brightness(self.reconstruction_window.brightness_Slider.value())
+        self.reconstruction_window.change_contrast(self.reconstruction_window.contrast_Slider.value())
+        self.reconstruction_window.bright_val_label.setText(str(0)+" %")
+        self.reconstruction_window.contrast_val_label.setText(str(0)+" %")
+
         self.action_Phantom.triggered.connect(self.Load_phantom_file)
         self.action_Sequence.triggered.connect(self.Load_sequence_file)
         self.phantom_window.img_qual_comboBox.activated.connect(self.change_size)
@@ -42,6 +51,10 @@ class MainWindow(qtw.QMainWindow):
     @pyqtSlot()
     def Load_phantom_file(self):
         try:
+            self.reconstruction_window.contrast_Slider.setValue(0)
+            self.reconstruction_window.brightness_Slider.setValue(0)
+            self.reconstruction_window.bright_val_label.setText(str(0) + " %")
+            self.reconstruction_window.contrast_val_label.setText(str(0) + " %")
             image_path = qtw.QFileDialog.getOpenFileName(filter="Image (*.*)")[0]
             phantom_img = cv2.imread(image_path)
             phantom_img = cv2.cvtColor(phantom_img, cv2.COLOR_BGR2GRAY)
@@ -51,8 +64,9 @@ class MainWindow(qtw.QMainWindow):
         except:
             pass
 
-
     def change_size(self):
+        self.reconstruction_window.contrast_Slider.setValue(0)
+        self.reconstruction_window.brightness_Slider.setValue(0)
         self.reconstruction_window.K_Space_holder.clear_canvans()
         self.reconstruction_window.Reconstruction_holder.clear_canvans()
         if self.reconstruction_window.image_opened:
@@ -62,35 +76,33 @@ class MainWindow(qtw.QMainWindow):
             if self.sequence_viewer.sequence_controller.Gy_Slider.value() != 0:
                 self.sequence_viewer.get_Gy_value()
 
-
-
-
-
     def send_to_phantom_window(self, phantom, resized):
         self.phantom_window.draw_phantom_image(phantom, resized)
         self.reconstruction_window.Reconstruction_holder.clear_canvans()
         self.reconstruction_window.K_Space_holder.clear_canvans()
         self.sequence_viewer.img_shape[0] = resized.shape[0]
 
-
     @pyqtSlot()
     def Load_sequence_file(self):
-        file_path = qtw.QFileDialog.getOpenFileName(filter="Text files (*.json)")[0]
-        self.sequence_viewer.sequence_controller.json_file.read_json(file_path)
-        rf = self.sequence_viewer.sequence_controller.json_file.data["Sequence"]["RF"]
-        slice = self.sequence_viewer.sequence_controller.json_file.data["Sequence"]["Slice"]
-        gy = self.sequence_viewer.sequence_controller.json_file.data["Sequence"]["GY"]
-        gx = self.sequence_viewer.sequence_controller.json_file.data["Sequence"]["GX"]
-        te = self.sequence_viewer.sequence_controller.json_file.data["Sequence"]["TE"]
-        tr = self.sequence_viewer.sequence_controller.json_file.data["Sequence"]["TR"]
+        try:
 
-        self.sequence_viewer.sequence_controller.tr_Slider.setValue(tr)
-        self.sequence_viewer.sequence_controller.RF_Slider.setValue(rf)
-        self.sequence_viewer.sequence_controller.Slice_Selection_Slider.setValue(slice)
-        self.sequence_viewer.sequence_controller.Gy_Slider.setValue(gy)
-        self.sequence_viewer.sequence_controller.Gx_Slider.setValue(gx)
-        self.sequence_viewer.sequence_controller.te_Slider.setValue(te)
+            file_path = qtw.QFileDialog.getOpenFileName(filter="Text files (*.json)")[0]
+            self.sequence_viewer.sequence_controller.json_file.read_json(file_path)
+            rf = self.sequence_viewer.sequence_controller.json_file.data["Sequence"]["RF"]
+            slice = self.sequence_viewer.sequence_controller.json_file.data["Sequence"]["Slice"]
+            gy = self.sequence_viewer.sequence_controller.json_file.data["Sequence"]["GY"]
+            gx = self.sequence_viewer.sequence_controller.json_file.data["Sequence"]["GX"]
+            te = self.sequence_viewer.sequence_controller.json_file.data["Sequence"]["TE"]
+            tr = self.sequence_viewer.sequence_controller.json_file.data["Sequence"]["TR"]
 
+            self.sequence_viewer.sequence_controller.tr_Slider.setValue(tr)
+            self.sequence_viewer.sequence_controller.RF_Slider.setValue(rf)
+            self.sequence_viewer.sequence_controller.Slice_Selection_Slider.setValue(slice)
+            self.sequence_viewer.sequence_controller.Gy_Slider.setValue(gy)
+            self.sequence_viewer.sequence_controller.Gx_Slider.setValue(gx)
+            self.sequence_viewer.sequence_controller.te_Slider.setValue(te)
+        except:
+            pass
 
 
 if __name__ == '__main__':

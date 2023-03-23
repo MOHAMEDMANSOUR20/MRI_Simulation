@@ -51,6 +51,9 @@ class PhantomWindow(qtw.QWidget):
 
         # initialization
         self.phantom_img = None
+        self.resized_image = None
+        self.forcontrast = None
+        self.forbrightness = None
         self.PI = math.pi
         self.widgets = [self.Phantom_holder, self.T1_holder, self.T2_holder, self.PD_holder]
         self.image_size = [16, 32, 64]
@@ -70,6 +73,9 @@ class PhantomWindow(qtw.QWidget):
 
     def draw_phantom_image(self, phantom_img, resized):
         self.phantom_img = phantom_img
+        self.resized_image = resized
+        self.forcontrast = self.resized_image.copy()
+        self.forbrightness = self.resized_image.copy()
         self.phantom_tabWidget.setCurrentIndex(0)
         self.Phantom_holder.clear_canvans()
         self.Phantom_holder.draw_image(resized)
@@ -94,17 +100,18 @@ class PhantomWindow(qtw.QWidget):
     def on_press(self, event):
         try:
             self.pop_wind.close()
-            xdata = int(event.xdata)
-            ydata = int(event.ydata)
+            xdata = event.xdata - 0.5
+            ydata = event.ydata - 0.5
             size = self.image_size[self.img_qual_comboBox.currentIndex()]
-            step = size * 0.05
             self.widgets[self.previous_widget].remove_rectangle()
 
-            self.widgets[self.phantom_tabWidget.currentIndex()].show_rectangle(xdata - int(step / 2),
-                                                                               ydata + int(step / 2), step, step)
+            self.widgets[self.phantom_tabWidget.currentIndex()].show_rectangle(xdata,
+                                                                               ydata, 1, 1)
 
             self.pop_wind.show_properties(
-                [xdata, ydata, self.t1_arr[ydata, xdata], self.t2_arr[ydata, xdata], self.pd_arr[ydata, xdata]])
+                [int(xdata), int(ydata), self.t1_arr[int(ydata), int(xdata)], self.t2_arr[int(ydata), int(xdata)],
+                 self.pd_arr[int(ydata), int(xdata)]])
+
             self.previous_widget = self.phantom_tabWidget.currentIndex()
         except:
             pass
@@ -113,7 +120,6 @@ class PhantomWindow(qtw.QWidget):
         try:
             if not self.pop_wind.isVisible():
                 self.widgets[self.phantom_tabWidget.currentIndex()].remove_rectangle()
-                print(self.phantom_tabWidget.currentIndex())
         except:
             pass
 
@@ -122,6 +128,28 @@ class PhantomWindow(qtw.QWidget):
             size = self.image_size[self.img_qual_comboBox.currentIndex()]
             resized_img = cv2.resize(self.phantom_img, (size, size))
             self.draw_phantom_image(self.phantom_img, resized_img)
+
+        except:
+            pass
+
+    def change_brightness(self, value):
+        try:
+            brightness = int(255 * value / 100)
+            img = (self.forbrightness.astype(np.int16).copy() + brightness)
+            self.forcontrast =img
+            self.Phantom_holder.draw_image(img, 0, 255)
+        except:
+            pass
+
+    def change_contrast(self, value):
+        try:
+            alpha = (100.0 + value) / 100.0
+            # compute new image pixel values based on alpha
+            min_val, max_val = np.min(self.forcontrast), np.max(self.forcontrast)
+            avg_val = (max_val + min_val) / 2.0
+            image = (self.forcontrast.astype(np.int16).copy() - avg_val) * alpha + avg_val
+            self.forbrightness = image
+            self.Phantom_holder.draw_image(image, 0, 255)
 
         except:
             pass

@@ -11,6 +11,9 @@ class Reconstruction(qtw.QWidget):
     image_opened = False
     test_image = None
     sequence_prepared = True
+    forcontrast = None
+    forbrightness = None
+    completed = False
     sequence = {}
 
     def __init__(self):
@@ -26,6 +29,9 @@ class Reconstruction(qtw.QWidget):
 
     def apply_sequence(self):
         if Reconstruction.is_prepared():
+            Reconstruction.completed = False
+            self.Reconstruction_holder.clear_canvans()
+            self.K_Space_holder.clear_canvans()
             phantom_img = Reconstruction.test_image
             num_row = phantom_img.shape[0]
             num_column = phantom_img.shape[1]
@@ -55,18 +61,43 @@ class Reconstruction(qtw.QWidget):
                     vector_sum[-j] = np.complex(x_sum, y_sum)
 
                 vector_summation[-i] = vector_sum
-                # img_vector_changed = np.matmul(img_vector_changed, -1 * R_forRF)
-            self.Reconstruction_holder.clear_canvans()
-            self.K_Space_holder.clear_canvans()
+                self.K_Space_holder.draw_image(np.abs(np.fft.fftshift(vector_summation)), animate=True)
+                self.Reconstruction_holder.draw_image(np.abs(np.fft.ifft2(vector_summation)), animate=True)
+            Reconstruction.completed = True
+            # img_vector_changed = np.matmul(img_vector_changed, -1 * R_forRF)
+
             # print((np.fft.fftshift(vector_summation)))
             # print(np.fft.fftshift(np.fft.fft2(Reconstruction.test_image)))
             # reconstruced_slice = np.abs(np.fft.ifft2(np.fft.ifftshift(vector_summation)))
-            self.K_Space_holder.draw_image(np.abs(np.fft.fftshift(vector_summation)))
-            self.Reconstruction_holder.draw_image(np.abs(np.fft.ifft2(vector_summation)))
+            # self.K_Space_holder.draw_image(np.abs(np.fft.fftshift(vector_summation)))
+            # self.Reconstruction_holder.draw_image(np.abs(np.fft.ifft2(vector_summation)))
 
         else:
             QtWidgets.QMessageBox.about(
                 self, "Error", "Open phantom first")
+
+    def change_brightness(self, value):
+        try:
+            self.bright_val_label.setText(str(self.brightness_Slider.value()) + " %")
+            if Reconstruction.completed:
+                brightness = int(250 * value / 100)
+                img = (Reconstruction.forbrightness.astype(np.int16).copy() + brightness)
+                Reconstruction.forcontrast  = img
+                self.Reconstruction_holder.draw_image(img, 0, 255)
+
+        except:
+            pass
+
+    def change_contrast(self, value):
+        try:
+            self.contrast_val_label.setText(str(self.contrast_Slider.value()) + " %")
+            if Reconstruction.completed:
+                brightness = int(250 * value / 100)
+                img = (Reconstruction.forcontrast.astype(np.int16).copy() + brightness)
+                Reconstruction.forbrightness = img
+                self.Reconstruction_holder.draw_image(img, 0, 255)
+        except:
+            pass
 
     @staticmethod
     def is_prepared():
@@ -75,7 +106,10 @@ class Reconstruction(qtw.QWidget):
     @staticmethod
     def store_slice(test_image):
         Reconstruction.test_image = test_image
+        Reconstruction.forcontrast = test_image
+        Reconstruction.forbrightness = test_image
         Reconstruction.image_opened = True
+        Reconstruction.completed = False
 
     @staticmethod
     def store_squence(sequence):

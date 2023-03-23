@@ -66,6 +66,15 @@
      </item>
      <item row="1" column="1">
       <widget class="QSlider" name="contrast_Slider">
+       <property name="minimum">
+        <number>-100</number>
+       </property>
+       <property name="maximum">
+        <number>100</number>
+       </property>
+       <property name="singleStep">
+        <number>5</number>
+       </property>
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
@@ -73,6 +82,15 @@
      </item>
      <item row="0" column="1">
       <widget class="QSlider" name="brightness_Slider">
+       <property name="minimum">
+        <number>-100</number>
+       </property>
+       <property name="maximum">
+        <number>100</number>
+       </property>
+       <property name="singleStep">
+        <number>5</number>
+       </property>
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>

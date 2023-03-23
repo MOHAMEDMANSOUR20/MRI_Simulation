@@ -23,8 +23,10 @@ class Viewer(FigureCanvas):
         self.axes.axis('off')
         self.rec = None
 
-    def draw_image(self, img, vmin=None, vmax=None):
+    def draw_image(self, img, vmin=None, vmax=None, animate=False):
         self.axes.imshow(img, cmap='gray', vmin=vmin, vmax=vmax, aspect='auto')
+        if animate:
+            self.start_event_loop(0.1)
         self.draw()
 
     def update_image(self, img):
@@ -78,7 +80,7 @@ class Sequence_Drawer(FigureCanvas):
         x = np.linspace(start, end, 100)
         y = 0.85 * np.sinc(100 * (x - te))
         self.axes[4].clear()
-        #self.axes[3].set_xlim(left=0, right=2)
+        # self.axes[3].set_xlim(left=0, right=2)
         self.axes[4].set_ylim(bottom=0, top=1)
         self.axes[4].plot(x, y, color="blue", linewidth=2)
         self.axes[4].set_ylabel("FID", size=15)
@@ -111,7 +113,7 @@ class Sequence_Drawer(FigureCanvas):
         start = gy - width / 2
         delta_hight = 0.95 / img_rows
         self.axes[2].clear()
-        #self.axes[2].set_xlim(left=0, right=1)
+        # self.axes[2].set_xlim(left=0, right=1)
         self.axes[2].set_ylim(bottom=0, top=1)
         for i in range(img_rows):
             hight = (i + 1) * delta_hight
@@ -127,7 +129,7 @@ class Sequence_Drawer(FigureCanvas):
         self.axes[2].set_xlim(left=0, right=tr)
         self.axes[3].set_xlim(left=0, right=tr)
         self.axes[4].set_xlim(left=0, right=tr)
-        #self.draw()
+        # self.draw()
 
     def animate_image(self, fig, update, init, frames):
         ani = animation.FuncAnimation(fig, update, frames=frames, init_func=init, blit=True)
