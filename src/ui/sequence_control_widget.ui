@@ -149,7 +149,7 @@
        <item row="2" column="2">
         <widget class="QLabel" name="gy_val_label">
          <property name="text">
-          <string>radian</string>
+          <string>ms</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>

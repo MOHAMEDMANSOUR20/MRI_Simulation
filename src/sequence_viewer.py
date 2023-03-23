@@ -29,12 +29,14 @@ class Sequence_Viewer(qtw.QWidget):
         tr = self.sequence_controller.tr_Slider.value()
         self.sequence_controller.json_file.data["Sequence"]["RF"] = rf
         rf = rf / 1000
+        self.sequence_controller.rf_val_label.setText(f"{2 * rf} PI")
         self.sequence_holder.draw_rf(rf, tr)
 
     def get_slice_selection_value(self):
         slice = self.sequence_controller.Slice_Selection_Slider.value()
         self.sequence_controller.json_file.data["Sequence"]["Slice"] = slice
         slice = slice / 1000
+        self.sequence_controller.slice_val_label.setText(f"{2*slice} PI")
         self.sequence_holder.draw_slice_selection(slice)
 
 
@@ -45,6 +47,7 @@ class Sequence_Viewer(qtw.QWidget):
         gy = tr * gy / 1000
         img_rows = self.img_shape[0]
         if img_rows > 0:
+            self.sequence_controller.gy_val_label.setText(f"{gy} ms")
             self.sequence_holder.draw_gy(img_rows, gy)
 
 
@@ -55,6 +58,7 @@ class Sequence_Viewer(qtw.QWidget):
         te = self.sequence_controller.te_Slider.value() * tr / 1000
 
         gx = gx / 1000
+        self.sequence_controller.gx_val_label.setText(f"{2 * gx} PI")
         self.sequence_holder.draw_gx(te, gx)
 
     def get_TE_value(self):

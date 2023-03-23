@@ -57,19 +57,19 @@ class Sequence_Drawer(FigureCanvas):
         self.axes[0].set_ylabel("RF", size=15)
         self.axes[1].set_ylabel("Slice", size=15)
         self.axes[2].set_ylabel("GY", size=15)
-        self.axes[3].set_ylabel("Signal", size=15)
-        self.axes[4].set_ylabel("Gx", size=15)
+        self.axes[3].set_ylabel("GX", size=15)
+        self.axes[4].set_ylabel("FID", size=15)
 
         super().__init__(self.fig)
 
     def draw_gx(self, te=0, gx=0):
         width = 0.15
         start = te - width / 2
-        self.axes[4].clear()
-        self.axes[4].set_ylabel("Gx", size=15)
+        self.axes[3].clear()
+        self.axes[3].set_ylabel("Gx", size=15)
         r = Rectangle((start, 0), width, 0.95 * gx, edgecolor='orange', linewidth=2)
         Rectangle.set_fill(r, False)
-        self.axes[4].add_patch(r)
+        self.axes[3].add_patch(r)
         self.draw()
 
     def draw_read_signal(self, te=0):
@@ -77,11 +77,11 @@ class Sequence_Drawer(FigureCanvas):
         end = te + 0.075
         x = np.linspace(start, end, 100)
         y = 0.85 * np.sinc(100 * (x - te))
-        self.axes[3].clear()
+        self.axes[4].clear()
         #self.axes[3].set_xlim(left=0, right=2)
-        self.axes[3].set_ylim(bottom=0, top=1)
-        self.axes[3].plot(x, y, color="blue", linewidth=2)
-        self.axes[3].set_ylabel("Signal", size=15)
+        self.axes[4].set_ylim(bottom=0, top=1)
+        self.axes[4].plot(x, y, color="blue", linewidth=2)
+        self.axes[4].set_ylabel("FID", size=15)
         self.draw()
 
     def draw_slice_selection(self, slice):
